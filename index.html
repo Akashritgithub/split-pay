@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SplitPay - Digital Wallet & Bill Splitting</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Authentication Section -->
+    <div id="auth-section" class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>SplitPay</h1>
+                <p>Digital Wallet & Bill Splitting Made Easy</p>
+            </div>
+            
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Login</button>
+                <button class="auth-tab" data-tab="signup">Sign Up</button>
+            </div>
+            
+            <!-- Login Form -->
+            <div id="login-form" class="auth-form active">
+                <div class="form-group">
+                    <label class="form-label" for="login-email">Email or Phone</label>
+                    <input type="text" id="login-email" class="form-control" placeholder="Enter email or phone number" value="john@example.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="login-password">Password</label>
+                    <input type="password" id="login-password" class="form-control" placeholder="Enter password" value="password">
+                </div>
+                <button class="btn btn--primary btn--full-width" id="login-btn">Login</button>
+                <div class="auth-divider">
+                    <span>OR</span>
+                </div>
+                <button class="btn btn--outline btn--full-width social-btn">
+                    <span>Continue with Google</span>
+                </button>
+            </div>
+            
+            <!-- Signup Form -->
+            <div id="signup-form" class="auth-form">
+                <div class="form-group">
+                    <label class="form-label" for="signup-name">Full Name</label>
+                    <input type="text" id="signup-name" class="form-control" placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="signup-email">Email</label>
+                    <input type="email" id="signup-email" class="form-control" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="signup-phone">Phone Number</label>
+                    <input type="tel" id="signup-phone" class="form-control" placeholder="+91 9876543210">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="signup-password">Password</label>
+                    <input type="password" id="signup-password" class="form-control" placeholder="Create a password">
+                </div>
+                <button class="btn btn--primary btn--full-width" id="signup-btn">Sign Up</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- OTP Verification Modal -->
+    <div id="otp-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Verify OTP</h3>
+            <p>Enter the 6-digit code sent to your phone/email</p>
+            <div class="otp-inputs">
+                <input type="text" maxlength="1" class="otp-input">
+                <input type="text" maxlength="1" class="otp-input">
+                <input type="text" maxlength="1" class="otp-input">
+                <input type="text" maxlength="1" class="otp-input">
+                <input type="text" maxlength="1" class="otp-input">
+                <input type="text" maxlength="1" class="otp-input">
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn--secondary" id="otp-cancel">Cancel</button>
+                <button class="btn btn--primary" id="otp-verify">Verify</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Password Setup Modal -->
+    <div id="payment-password-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Set Payment Password</h3>
+            <p>Set a 4-6 digit password for secure payments</p>
+            <div class="form-group">
+                <input type="password" id="payment-password" class="form-control" placeholder="Enter payment password" maxlength="6">
+            </div>
+            <div class="form-group">
+                <input type="password" id="confirm-payment-password" class="form-control" placeholder="Confirm payment password" maxlength="6">
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn--primary btn--full-width" id="set-payment-password">Set Password</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="main-app" class="main-app hidden">
+        <!-- Navigation -->
+        <nav class="main-nav">
+            <div class="nav-brand">
+                <h2>SplitPay</h2>
+            </div>
+            <div class="nav-menu">
+                <button class="nav-item active" data-page="dashboard">Dashboard</button>
+                <button class="nav-item" data-page="groups">Groups</button>
+                <button class="nav-item" data-page="wallet">Wallet</button>
+                <button class="nav-item" data-page="transactions">Transactions</button>
+                <button class="nav-item" data-page="profile">Profile</button>
+            </div>
+            <button class="btn btn--outline" id="logout-btn">Logout</button>
+        </nav>
+
+        <!-- Dashboard Page -->
+        <div id="dashboard-page" class="page active">
+            <div class="container">
+                <div class="dashboard-header">
+                    <h1 id="welcome-message">Welcome back!</h1>
+                    <div class="wallet-balance-card">
+                        <h3>Wallet Balance</h3>
+                        <div class="balance-amount" id="wallet-balance">₹5,000</div>
+                        <button class="btn btn--primary btn--sm" id="add-money-btn">Add Money</button>
+                    </div>
+                </div>
+                
+                <div class="quick-actions">
+                    <h3>Quick Actions</h3>
+                    <div class="action-grid">
+                        <button class="action-card" id="pay-bill-btn">
+                            <span class="action-icon">💳</span>
+                            <span>Pay Bill</span>
+                        </button>
+                        <button class="action-card" id="create-group-btn">
+                            <span class="action-icon">👥</span>
+                            <span>Create Group</span>
+                        </button>
+                        <button class="action-card" id="scan-qr-btn">
+                            <span class="action-icon">📱</span>
+                            <span>Scan QR</span>
+                        </button>
+                        <button class="action-card" id="send-money-btn">
+                            <span class="action-icon">💸</span>
+                            <span>Send Money</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="recent-transactions">
+                    <h3>Recent Transactions</h3>
+                    <div id="recent-transactions-list" class="transaction-list">
+                        <!-- Transactions will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Groups Page -->
+        <div id="groups-page" class="page">
+            <div class="container">
+                <div class="page-header">
+                    <h1>My Groups</h1>
+                    <button class="btn btn--primary" id="new-group-btn">Create New Group</button>
+                </div>
+                <div id="groups-list" class="groups-grid">
+                    <!-- Groups will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Wallet Page -->
+        <div id="wallet-page" class="page">
+            <div class="container">
+                <div class="wallet-header">
+                    <h1>My Wallet</h1>
+                    <div class="wallet-balance-large">
+                        <h2 id="wallet-balance-large">₹5,000</h2>
+                        <div class="wallet-actions">
+                            <button class="btn btn--primary" id="add-money-wallet-btn">Add Money</button>
+                            <button class="btn btn--outline" id="withdraw-money-btn">Withdraw</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="wallet-features">
+                    <div class="feature-card">
+                        <h3>Payment Methods</h3>
+                        <div id="payment-methods-list">
+                            <!-- Payment methods will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transactions Page -->
+        <div id="transactions-page" class="page">
+            <div class="container">
+                <div class="page-header">
+                    <h1>Transaction History</h1>
+                    <select class="form-control" style="width: auto;" id="transaction-filter">
+                        <option value="all">All Transactions</option>
+                        <option value="payment">Payments</option>
+                        <option value="received">Received</option>
+                        <option value="group">Group Expenses</option>
+                    </select>
+                </div>
+                <div id="transactions-list" class="transaction-list">
+                    <!-- Transactions will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Page -->
+        <div id="profile-page" class="page">
+            <div class="container">
+                <h1>Profile Settings</h1>
+                <div class="profile-card">
+                    <div class="profile-info">
+                        <h3 id="profile-name">John Doe</h3>
+                        <p id="profile-email">john@example.com</p>
+                        <p id="profile-phone">+919876543210</p>
+                    </div>
+                    <div class="profile-actions">
+                        <button class="btn btn--outline" id="change-payment-password">Change Payment Password</button>
+                        <button class="btn btn--outline" id="change-profile-password">Change Login Password</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- QR Scanner Modal -->
+    <div id="qr-scanner-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Scan QR Code</h3>
+            <div class="qr-scanner-container">
+                <img src="https://pplx-res.cloudinary.com/image/upload/v1756490184/pplx_project_search_images/eb068649ee4d42b844fdf7a341ca345217eed791.png" alt="Sample QR Code" class="qr-code-display">
+                <p>Scanning for payment QR codes...</p>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Amount</label>
+                <input type="number" id="qr-amount" class="form-control" placeholder="Enter amount" value="100">
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn--secondary" id="qr-cancel">Cancel</button>
+                <button class="btn btn--primary" id="qr-pay">Pay Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Confirmation Modal -->
+    <div id="payment-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Confirm Payment</h3>
+            <div class="payment-details">
+                <div class="payment-item">
+                    <span>Amount:</span>
+                    <span id="payment-amount">₹100</span>
+                </div>
+                <div class="payment-item">
+                    <span>To:</span>
+                    <span id="payment-recipient">Merchant</span>
+                </div>
+                <div class="payment-item">
+                    <span>Payment Method:</span>
+                    <select id="payment-method" class="form-control">
+                        <option value="wallet">Wallet Balance</option>
+                        <option value="upi">UPI Payment</option>
+                        <option value="bank">Bank Account</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Payment Password</label>
+                <input type="password" id="confirm-payment-pwd" class="form-control" placeholder="Enter payment password">
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn--secondary" id="payment-cancel">Cancel</button>
+                <button class="btn btn--primary" id="payment-confirm">Confirm Payment</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Group Creation Modal -->
+    <div id="group-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Create New Group</h3>
+            <div class="form-group">
+                <label class="form-label">Group Name</label>
+                <input type="text" id="group-name" class="form-control" placeholder="Enter group name">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Add Members (Email/Phone)</label>
+                <input type="text" id="group-members" class="form-control" placeholder="Enter email or phone, separated by commas">
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn--secondary" id="group-cancel">Cancel</button>
+                <button class="btn btn--primary" id="group-create">Create Group</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Money Modal -->
+    <div id="add-money-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Add Money to Wallet</h3>
+            <div class="form-group">
+                <label class="form-label">Amount</label>
+                <input type="number" id="add-money-amount" class="form-control" placeholder="Enter amount">
+            </div>
+            <div class="form-group">
+                <label class="form-label">From Account</label>
+                <select id="add-money-source" class="form-control">
+                    <option value="bank">Bank Account (****1234)</option>
+                    <option value="card">Debit Card (****5678)</option>
+                </select>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn--secondary" id="add-money-cancel">Cancel</button>
+                <button class="btn btn--primary" id="add-money-confirm">Add Money</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success/Error Notification -->
+    <div id="notification" class="notification hidden">
+        <div class="notification-content">
+            <span id="notification-message">Operation successful!</span>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
